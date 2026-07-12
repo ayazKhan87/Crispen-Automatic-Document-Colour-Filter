@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crispen &middot; document clean-up</title>
+  <style>
+    /* ---- Monochrome palette: white / grey / black only ---- */
+    :root {
+      --black: #0a0a0a;
+      --ink: #1c1c1c;
+      --grey-900: #2b2b2b;
+      --grey-700: #4a4a4a;
+      --grey-500: #7d7d7d;
+      --grey-300: #c9c9c9;
+      --grey-100: #ededed;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--grey-100);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    header {
+      background: var(--black);
+      color: var(--white);
+      padding: 28px 20px;
+      text-align: center;
+      border-bottom: 4px solid var(--grey-500);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .brand .mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--white);
+      color: var(--black);
+      font-weight: 700;
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.9rem;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      color: var(--grey-300);
+      font-size: 0.95rem;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--grey-300);
+      border-radius: 6px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .uploader {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    input[type="file"] {
+      flex: 1 1 260px;
+      padding: 10px;
+      border: 1px dashed var(--grey-500);
+      border-radius: 4px;
+      background: var(--grey-100);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    button {
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      padding: 12px 26px;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    button:hover:not(:disabled) { background: var(--grey-700); }
+    button:disabled {
+      background: var(--grey-300);
+      color: var(--grey-500);
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 16px;
+      min-height: 1.4em;
+      font-size: 0.92rem;
+      color: var(--grey-700);
+    }
+
+    .status.error { color: var(--black); font-weight: 600; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 12px;
+      border: 1px solid var(--grey-700);
+      border-radius: 999px;
+      background: var(--grey-100);
+      color: var(--ink);
+      font-size: 0.8rem;
+      letter-spacing: 0.3px;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 640px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+
+    figure {
+      margin: 0;
+      background: var(--grey-100);
+      border: 1px solid var(--grey-300);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    figcaption {
+      background: var(--grey-900);
+      color: var(--white);
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    figure img {
+      display: block;
+      width: 80%;
+      height: auto;
+      margin: 0 auto;
+      background:
+        repeating-conic-gradient(var(--grey-300) 0% 25%, var(--white) 0% 50%)
+        50% / 20px 20px;
+    }
+
+    .hidden { display: none; }
+
+    .result-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin: 0 0 14px;
+    }
+
+    .result-name {
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    .result-panel.error {
+      border-left: 4px solid var(--black);
+    }
+
+    .result-error {
+      color: var(--black);
+      font-weight: 600;
+    }
+
+    .download-row {
+      margin-top: 18px;
+      text-align: right;
+    }
+
+    .download-row a {
+      color: var(--black);
+      text-decoration: underline;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--grey-500);
+      font-size: 0.8rem;
+      padding: 20px;
+    }
+
+    /* Simple monochrome spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 3px solid var(--grey-300);
+      border-top-color: var(--black);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="mark">C</span>
+      <h1>Crispen</h1>
+    </div>
+    <p>Automatic document clean-up &middot; select one or many images &middot; white background, crisp ink, colours preserved</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <form id="filter-form">
+        <div class="uploader">
+          <input type="file" id="image-input" name="image" multiple
+                 accept=".jpg,.jpeg,.png,.bmp,.webp" required />
+          <button type="submit" id="run-btn">Crispen it</button>
+        </div>
+        <div class="status" id="status"></div>
+      </form>
+    </section>
+
+    <div id="results-container"></div>
+  </main>
+
+  <footer>
+    Crispen &middot; crisp, clean documents &middot; served over a simple Flask API
+  </footer>
+
+  <script>
+    const form = document.getElementById('filter-form');
+    const fileInput = document.getElementById('image-input');
+    const runBtn = document.getElementById('run-btn');
+    const statusEl = document.getElementById('status');
+    const resultsContainer = document.getElementById('results-container');
+
+    const CATEGORY_LABELS = {
+      white_document: 'White Document',
+      colored_product: 'Coloured Product / Packaging',
+      manual: 'Manual',
+      unknown: 'Unknown'
+    };
+
+    function setStatus(message, isError) {
+      statusEl.textContent = '';
+      statusEl.className = 'status' + (isError ? ' error' : '');
+      if (message) statusEl.append(document.createTextNode(message));
+    }
+
+    function setBusy(busy, count) {
+      runBtn.disabled = busy;
+      fileInput.disabled = busy;
+      if (busy) {
+        setStatus('', false);
+        const spinner = document.createElement('span');
+        spinner.className = 'spinner';
+        statusEl.appendChild(spinner);
+        const noun = count === 1 ? 'document' : count + ' documents';
+        statusEl.appendChild(document.createTextNode('Filtering ' + noun + '...'));
+      }
+    }
+
+    function safeName(name) {
+      return (name || 'image').replace(/[^\w.\-]+/g, '_');
+    }
+
+    // Build one result card (success or per-file error) and append it.
+    function renderResult(item, index) {
+      const panel = document.createElement('section');
+      panel.className = 'panel result-panel';
+
+      const head = document.createElement('div');
+      head.className = 'result-head';
+
+      const nameEl = document.createElement('span');
+      nameEl.className = 'result-name';
+      nameEl.textContent = (index + 1) + '. ' + (item.filename || 'image');
+      head.appendChild(nameEl);
+
+      if (item.ok) {
+        const badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = CATEGORY_LABELS[item.category] || item.category;
+        head.appendChild(badge);
+      } else {
+        panel.classList.add('error');
+      }
+      panel.appendChild(head);
+
+      if (!item.ok) {
+        const err = document.createElement('p');
+        err.className = 'result-error';
+        err.textContent = item.error || 'Could not process this file.';
+        panel.appendChild(err);
+        resultsContainer.appendChild(panel);
+        return;
+      }
+
+      const compare = document.createElement('div');
+      compare.className = 'compare';
+
+      const origFig = document.createElement('figure');
+      const origCap = document.createElement('figcaption');
+      origCap.textContent = 'Original';
+      const origImg = document.createElement('img');
+      origImg.src = item.original;
+      origImg.alt = 'Original document';
+      origFig.appendChild(origCap);
+      origFig.appendChild(origImg);
+
+      const resFig = document.createElement('figure');
+      const resCap = document.createElement('figcaption');
+      resCap.textContent = 'Filtered';
+      const resImg = document.createElement('img');
+      resImg.src = item.result;
+      resImg.alt = 'Filtered document';
+      resFig.appendChild(resCap);
+      resFig.appendChild(resImg);
+
+      compare.appendChild(origFig);
+      compare.appendChild(resFig);
+      panel.appendChild(compare);
+
+      const dlRow = document.createElement('div');
+      dlRow.className = 'download-row';
+      const dl = document.createElement('a');
+      dl.href = item.result;
+      dl.download = 'filtered_' + safeName(item.filename || ('image_' + (index + 1))) + '.png';
+      dl.textContent = 'Download filtered image';
+      dlRow.appendChild(dl);
+      panel.appendChild(dlRow);
+
+      resultsContainer.appendChild(panel);
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const files = fileInput.files;
+      if (!files.length) {
+        setStatus('Please choose at least one image.', true);
+        return;
+      }
+
+      const data = new FormData();
+      for (const file of files) {
+        data.append('image', file);
+      }
+
+      resultsContainer.textContent = '';
+      setBusy(true, files.length);
+
+      try {
+        const response = await fetch('/api/filter', { method: 'POST', body: data });
+        const payload = await response.json();
+
+        if (!response.ok || !payload.ok) {
+          throw new Error(payload.error || ('Request failed (' + response.status + ')'));
+        }
+
+        const results = payload.results || [];
+        results.forEach(renderResult);
+
+        const okCount = results.filter((r) => r.ok).length;
+        const failCount = results.length - okCount;
+        let msg = 'Done. ' + okCount + ' of ' + results.length + ' filtered.';
+        if (failCount) msg += ' ' + failCount + ' failed.';
+        setStatus(msg, failCount > 0);
+      } catch (err) {
+        setStatus(err.message, true);
+      } finally {
+        setBusy(false);
+      }
+    });
+  </script>
+</body>
+</html>

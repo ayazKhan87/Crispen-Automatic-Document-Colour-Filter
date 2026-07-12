@@ -1,0 +1,19 @@
+# Crispen — dependencies
+#
+# Install everything (engine + web app):
+#     pip install -r requirements.txt
+#
+# The list is split into two groups. If you only want the image-processing
+# engine (crispen_engine.py) as a library, the "ENGINE" group is all you need;
+# the "API / UI" group is only required to run the Flask web app (app.py).
+
+# --- ENGINE (crispen_engine.py) --------------------------------------------
+# Pure classical computer vision — no machine learning.
+opencv-python>=4.8,<5      # cv2: colour spaces, CLAHE, guided filter, morphology
+numpy>=1.24,<2             # array maths for every pixel operation
+pillow>=10.0,<11           # PIL image decode/encode (pil_to_bgr / bgr_to_pil)
+
+# --- API / UI (app.py + templates/index.html) ------------------------------
+# Only needed to serve the HTTP API and the black-and-white web page.
+# (Werkzeug is pulled in automatically as a Flask dependency.)
+flask>=3.0,<4              # web framework: routes, multipart upload, JSON
