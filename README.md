@@ -6,11 +6,6 @@
 > **zero machine learning**: no models, no training, no GPU. Just OpenCV +
 > NumPy image processing.
 
-**Keywords:** automatic document colour filter · document image enhancement ·
-scanned page clean-up · background whitening / bleaching · shadow removal ·
-adaptive thresholding · OpenCV · NumPy · pure algorithm (no ML / no deep
-learning) · Flask.
-
 **What it does**
 
 - **Classifies** each page (plain document vs. colourful product) from the
