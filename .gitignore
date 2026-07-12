@@ -11,11 +11,12 @@ dist/
 venv/
 env/
 
-# OS / editor
+# OS / editor / tooling
 .DS_Store
 Thumbs.db
 .idea/
 .vscode/
+.claude/
 
 # Flask / runtime
 instance/

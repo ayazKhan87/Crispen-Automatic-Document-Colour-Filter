@@ -30,6 +30,10 @@ ships with a small **web app** so you can try it in a browser right away.
 
 ## Try it (web UI)
 
+> **Input requirement:** feed it a **pre-cropped document image** — just the
+> page itself, with the surrounding background/edges already trimmed off.
+> Crispen cleans the page; it does not detect or crop the page for you.
+
 ```bash
 pip install -r requirements.txt
 python app.py
@@ -174,6 +178,8 @@ crispen/
 
 ## Notes
 
+- **Input must be a pre-cropped document image** — the page only, edges already
+  trimmed. Crispen does not perform page detection / cropping.
 - Tuned for images up to ~2000 px on the long edge; a typical page takes a few
   seconds on CPU.
 - **Performance:** the pipeline is somewhat slow — it favours quality over
